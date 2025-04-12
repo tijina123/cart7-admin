@@ -15,7 +15,7 @@ const OrderTable = () => {
     try {
       const response = await getOrder();
 
-      console.log(response, "response---------+++++++++++++++++++++");
+      console.log(response, "response---------+++ order ++++++++++++++++++");
 
       setOrders(response.orders);
     } catch (error) {}
@@ -41,7 +41,7 @@ const OrderTable = () => {
             <tr className="bg-gray-200">
               <th className="p-2 text-center">Order Id</th>
               <th className="p-2 text-center">Name</th>
-              <th className="p-2 text-center">Phone Number</th>
+              <th className="p-2 text-center">Date</th>
               <th className="p-2 text-center">Product</th>
               <th className="p-2 text-center"></th>
               <th className="p-2 text-center">Status</th>
@@ -52,7 +52,7 @@ const OrderTable = () => {
               <tr key={order._id} className="border-b">
                 <td className="p-2 text-center">{order._id}</td>
                 <td className="p-2 text-center">{order?.user?.name}</td>
-                <td className="p-2 text-center">{order?.user?.phone}</td>
+                <td className="p-2 text-center">{order?.createdAt?.split('T')[0]}</td>
                 <td className="p-2 text-center">
                   <div className="flex items-center space-x-2 border-b py-2">
                     <img
@@ -100,6 +100,7 @@ const OrderTable = () => {
                     <option value="Out for Delivery">Out for Delivery</option>
                     <option value="Delivered">Delivered</option>
                     <option value="Failed Delivery">Failed Delivery</option>
+                    <option value="Cancelled">Cancelled</option>
                   </select>
                 </td>
               </tr>
