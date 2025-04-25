@@ -19,10 +19,10 @@ const ProductTable = () => {
   const fetchProducts = async () => {
     try {
       const response = await getProductData();
-      console.log(response, "response---------");
-
       setProducts(response.products);
-    } catch (error) {}
+    } catch (error) {
+      
+    }
   };
 
   const handleEdit = (product) => {

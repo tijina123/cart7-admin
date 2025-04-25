@@ -3,21 +3,36 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaChevronDown } from "react-icons/fa";
 import AdminService from "../../services/admin-api-service/AdminService";
 
+const planOptions = [
+  { name: "Free plan", amount: 0, percentage: 25 },
+  { name: "plan 1", amount: 999, percentage: 22 },
+  { name: "plan 2", amount: 1499, percentage: 20 },
+  { name: "plan 3", amount: 1999, percentage: 18 },
+  { name: "plan 4", amount: 2499, percentage: 16 },
+  { name: "plan 5", amount: 2999, percentage: 14 },
+  { name: "plan 6", amount: 3499, percentage: 12 },
+  { name: "plan 7", amount: 3999, percentage: 10 }
+];
+
 const Register = () => {
+
+  // const [selected, setSelected] = useState("basic");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selected, setSelected] = useState(planOptions[0].name);
+
   const [userData, setUserData] = useState({
     name: "",
     email: "",
     password: "",
     phone: "",
     companyname: "",
-    plan: "basic", // Default plan selection
+    plan: selected, // Default plan selection
     role: "admin",
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
   const { postRegister } = AdminService();
 
@@ -30,6 +45,9 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    console.log(selected, "===selected");
+    console.log(userData, "===userData");
+    return;
     const response = await postRegister(userData);
     if (response?.success === true) {
       setLoading(true);
@@ -81,29 +99,51 @@ const Register = () => {
             />
           </div>
           <div className="mb-3 position-relative">
-            <label className="form-label">Plan</label>
-            <div
-              className="input-group"
-              onClick={() => setShowDropdown(!showDropdown)}
-              style={{ cursor: "pointer" }}
-            >
-              <select
-                name="plan"
-                className="form-control"
-                value={userData.plan}
-                onChange={handleChange}
-                required
-                style={{ appearance: "none" }}
-              >
-                <option value="basic">Basic</option>
-                <option value="standard">Standard</option>
-                <option value="premium">Premium</option>
-              </select>
-              <span className="input-group-text">
-                <FaChevronDown />
-              </span>
-            </div>
-          </div>
+      <label className="form-label">Plan</label>
+      <div className="position-relative">
+        <div
+          className="input-group"
+          onClick={() => setShowDropdown(!showDropdown)}
+          style={{ cursor: "pointer" }}
+        >
+          <div className="form-control">{selected}</div>
+          <span className="input-group-text">
+            <FaChevronDown />
+          </span>
+        </div>
+
+        {showDropdown && (
+          <ul
+            className="dropdown-menu show w-100"
+            style={{ position: "absolute", top: "100%", zIndex: 1000 }}
+          >
+            {planOptions.map((option, index) => (
+              <li key={index}>
+                <button
+                  type="button"
+                  className="dropdown-item d-flex justify-content-between align-items-center"
+                  onClick={() => {
+                    setSelected(option.name);
+                    setShowDropdown(false);
+                    handleChange({
+                      target: {
+                        name: "plan",
+                        value: option.name, // or JSON.stringify(option) if needed
+                      },
+                    });
+                  }}
+                >
+                  <div className="w-full d-flex justify-content-between">
+                    <div className="fw-bold">{option.name}</div>
+                    <small>₹{option.amount} - {option.percentage}% fee</small>
+                  </div>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
           <div className="mb-3 position-relative">
             <label className="form-label">Password</label>
             <div className="input-group">
