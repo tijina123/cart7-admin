@@ -20,6 +20,7 @@ import Offers from "./pages/admin/Offer";
 import User from "./pages/admin/User";
 import Orders from "./pages/admin/Orders";
 
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import LoginProtectedRoute from "./components/protected-route/LoginProtectedRoute";
@@ -49,6 +50,7 @@ function App() {
           <Route path="/user" element={<User />} />
           <Route path="/product-table" element={<DisplayProductTable />} />
           <Route path="/order-admin" element={<Orders />} />
+      
         </Route>
         
       </Routes>
