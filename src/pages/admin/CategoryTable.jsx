@@ -5,7 +5,7 @@ const CategoryTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [editingCategory, setEditingCategory] = useState(null);
-  const { AddCategory, EditCategory, handleToggleCategory, getCategoryeData } =
+  const { AddCategory, EditCategory, handleToggleCategory, getAllCategoryeData  } =
     AdminService();
 
   const [newCategory, setNewCategory] = useState({
@@ -22,7 +22,7 @@ const CategoryTable = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await getCategoryeData();
+      const response = await getAllCategoryeData();
 
       setCategories(response.categories);
     } catch (error) {}

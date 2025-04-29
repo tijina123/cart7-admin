@@ -86,9 +86,15 @@ const AdminService = () => {
     return response.data;
   };
 
+      //get all home data
+      const getAllCategoryeData = async () => {
+        const response = await axiosPrivate.get("/category/all");
+        return response.data;
+     };
+
   //get all home data
   const getProductData = async () => {
-    const response = await axiosPrivate.get("/product");
+    const response = await axiosPrivate.get("/product/by-agent");
     return response.data;
   };
 
@@ -146,6 +152,7 @@ const AdminService = () => {
     handleToggleUser,
     getUserData,
     getCategoryeData,
+    getAllCategoryeData,
     getProductData,
     AddOffer,
     getOffer,
