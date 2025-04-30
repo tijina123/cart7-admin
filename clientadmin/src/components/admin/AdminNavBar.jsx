@@ -134,7 +134,7 @@ const Sidebar = () => {
 
         {/* Logo */}
         <div className="flex items-center gap-2 p-4">
-          <span className="text-green-600 text-xl font-bold">Dashtar</span>
+          <span className="text-green-600 text-xl font-bold">Admin Panel</span>
         </div>
 
         {/* Menu Items */}

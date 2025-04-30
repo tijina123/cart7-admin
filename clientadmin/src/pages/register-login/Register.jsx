@@ -10,10 +10,10 @@ const Register = () => {
     password: "",
     phone: "",
     companyname: "",
-    plan: "basic", // Default plan selection
+    plan: "basic",
     role: "admin",
   });
-  
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -31,12 +31,14 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     const response = await postRegister(userData);
-    if(success === true) {
+
+    if (response?.data?.success) {
       setLoading(true);
-      setError(""); 
+      setError("");
       navigate("/login");
     } else {
-      setLoading(false);            
+      setError(response?.message || "Registration failed");
+      setLoading(false);
     }
     console.log("Registering user:", userData);
   };
@@ -70,6 +72,19 @@ const Register = () => {
             />
           </div>
           <div className="mb-3">
+            <label className="form-label">Phone Number</label>
+            <input 
+              type="tel" 
+              name="phone"
+              className="form-control"
+              value={userData.phone}
+              onChange={handleChange}
+              pattern="[0-9]{10}"
+              title="Phone number must be 10 digits"
+              required
+            />
+          </div>
+          <div className="mb-3">
             <label className="form-label">Company Name</label>
             <input 
               type="text" 
@@ -82,7 +97,11 @@ const Register = () => {
           </div>
           <div className="mb-3 position-relative">
             <label className="form-label">Plan</label>
-            <div className="input-group" onClick={() => setShowDropdown(!showDropdown)} style={{ cursor: "pointer" }}>
+            <div
+              className="input-group"
+              onClick={() => setShowDropdown(!showDropdown)}
+              style={{ cursor: "pointer" }}
+            >
               <select 
                 name="plan" 
                 className="form-control" 
@@ -99,13 +118,6 @@ const Register = () => {
                 <FaChevronDown />
               </span>
             </div>
-            {/* {showDropdown && (
-              <div className="dropdown-menu show w-100" style={{ position: "absolute", top: "100%", left: 0, zIndex: 10 }}>
-                <button className="dropdown-item" onClick={() => setUserData({ ...userData, plan: "basic" })}>Basic</button>
-                <button className="dropdown-item" onClick={() => setUserData({ ...userData, plan: "standard" })}>Standard</button>
-                <button className="dropdown-item" onClick={() => setUserData({ ...userData, plan: "premium" })}>Premium</button>
-              </div>
-            )} */}
           </div>
           <div className="mb-3 position-relative">
             <label className="form-label">Password</label>
@@ -140,7 +152,6 @@ const Register = () => {
 };
 
 export default Register;
-
 
 
 

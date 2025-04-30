@@ -42,15 +42,30 @@ const ProductTable = () => {
     try {
       const response = await getProductData();
 
+      console.log(response, "response");
+      
+
       setProducts(response.products);
     } catch (error) {}
   };
 
   const handleEdit = (product) => {
-    setEditProductId(product.id);
-    setEditedProduct(product);
+    setEditProductId(product._id); // or product.id depending on your backend
+  
+    setEditedProduct({
+      _id: product._id,                      // Keeping ID for future use
+      name: product.name || "",              // Name
+      category: product.category?.name || "", // Category name (from nested object)
+      price: product.product_price || 0,     // Mapping product_price to price
+      salePrice: product.sale_price || 0,    // Mapping sale_price to salePrice
+      stock: product.stock || 0,             // Stock
+      images: product.images || [],          // Images array
+      status: product.isActive || false,     // isActive to status
+    });
+  
     setIsModalOpen(true);
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,9 +111,12 @@ const ProductTable = () => {
 
   const handleToggle = async (productId) => {
     try {
+      console.log();
+      
       const response = await handleToggleProduct(productId);
-
+      console.log(response, "response from toggle product");
       setProducts(response?.product);
+      
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
