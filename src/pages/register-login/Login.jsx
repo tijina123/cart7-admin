@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import AdminService from "../../services/admin-api-service/AdminService";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const Login = () => {
     try {
       e.preventDefault();
       console.log("Logging in with:", { email, password });
-
+   
       let userData = { email, password };
       const response = await postLogin(userData);
       console.log(response, "--------------res");
@@ -32,11 +33,14 @@ const Login = () => {
         localStorage.setItem("profileImage", image);
         localStorage.setItem("name", name);
 
-        setAuth({ accessToken, role, image, name });
+     
 
-        navigate("/dashboard");
+        toast.success(response?.data?.message);
+      setTimeout(() => {
 
-        switch (role) {
+         setAuth({ accessToken, role, image, name });
+         
+           switch (role) {
           case "super Admin":
             navigate("/dashboard");
             break;
@@ -46,13 +50,21 @@ const Login = () => {
           default:
             navigate("/login");
         }
-      }
+      }, 1500);
+
+
+    
+      } else {
+      toast.error(response?.data?.message);
+    }
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
+    <>
+       <Toaster position="top-center" reverseOrder={false} />
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card p-4 shadow" style={{ width: "400px" }}>
         <h2 className="text-center">Login</h2>
@@ -61,7 +73,7 @@ const Login = () => {
             <label className="form-label">Email</label>
             <input
               type="email"
-              className="form-control"
+              className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -72,7 +84,7 @@ const Login = () => {
             <div className="input-group">
               <input
                 type={showPassword ? "text" : "password"}
-                className="form-control"
+                className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -97,6 +109,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

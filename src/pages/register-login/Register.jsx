@@ -21,14 +21,19 @@ const Register = () => {
   const [selected, setSelected] = useState(planOptions[0].name);
 
   const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
-    companyname: "",
-    plan: selected, // Default plan selection
-    role: "admin",
-  });
+  name: "",
+  email: "",
+  password: "",
+  phone: "",
+  companyname: "",
+  plan: selected,
+  role: "admin",
+  beneficiaryName: "",
+  accountNumber: "",
+  reAccountNumber: "",
+  ifscCode: "",
+});
+
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,9 +50,14 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (userData.accountNumber !== userData.reAccountNumber) {
+  setError("Account numbers do not match.");
+  return;
+}
+
     console.log(selected, "===selected");
     console.log(userData, "===userData");
-    return;
+
     const response = await postRegister(userData);
     if (response?.success === true) {
       setLoading(true);
@@ -60,29 +70,44 @@ const Register = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card p-4 shadow" style={{ width: "400px" }}>
+   <div className="container d-flex justify-content-center align-items-center" style={{ height: "100vh", overflow: "auto" }}>
+  <div className="card p-4 shadow" style={{ width: "500px", maxHeight: "95vh", overflowY: "auto" }}>
         <h2 className="text-center">Register</h2>
         {error && <div className="alert alert-danger">{error}</div>}
+        
+
         <form onSubmit={handleRegister}>
           <div className="mb-3">
             <label className="form-label">Name</label>
-            <input
-              type="text"
-              name="name"
-              className="form-control"
-              value={userData.name}
-              onChange={handleChange}
-              required
-            />
+           <input
+  type="text"
+  name="name"
+  className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
+  value={userData.name}
+  onChange={handleChange}
+  required
+/>
+
           </div>
           <div className="mb-3">
             <label className="form-label">Email</label>
             <input
               type="email"
               name="email"
-              className="form-control"
+              className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
               value={userData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Phone</label>
+            <input
+              type="phone"
+              name="phone"
+              className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
+              value={userData.phone}
               onChange={handleChange}
               required
             />
@@ -92,12 +117,63 @@ const Register = () => {
             <input
               type="text"
               name="companyname"
-              className="form-control"
+              className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
               value={userData.companyname}
               onChange={handleChange}
               required
             />
           </div>
+          <h5 className="mt-4 mb-3 border-bottom pb-2">Bank Details</h5>
+
+<div className="mb-3">
+  <label className="form-label">Beneficiary Name</label>
+  <input
+    type="text"
+    name="beneficiaryName"
+    className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
+    value={userData.beneficiaryName}
+    onChange={handleChange}
+    required
+  />
+</div>
+
+<div className="mb-3">
+  <label className="form-label">Account Number</label>
+  <input
+    type="text"
+    name="accountNumber"
+    className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
+    value={userData.accountNumber}
+    onChange={handleChange}
+    required
+  />
+</div>
+
+<div className="mb-3">
+  <label className="form-label">Re-enter Account Number</label>
+  <input
+    type="text"
+    name="reAccountNumber"
+    className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
+    value={userData.reAccountNumber}
+    onChange={handleChange}
+    required
+  />
+</div>
+
+<div className="mb-3">
+  <label className="form-label">IFSC Code</label>
+  <input
+    type="text"
+    name="ifscCode"
+    className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
+    value={userData.ifscCode}
+    onChange={handleChange}
+    required
+  />
+</div>
+
+
           <div className="mb-3 position-relative">
       <label className="form-label">Plan</label>
       <div className="position-relative">
@@ -106,7 +182,7 @@ const Register = () => {
           onClick={() => setShowDropdown(!showDropdown)}
           style={{ cursor: "pointer" }}
         >
-          <div className="form-control">{selected}</div>
+          <div className="form-control !border-green-600 !text-green-700 !focus:ring-green-500">{selected}</div>
           <span className="input-group-text">
             <FaChevronDown />
           </span>
@@ -150,7 +226,7 @@ const Register = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
-                className="form-control"
+                className="form-control !border-green-600 !text-green-700 !focus:ring-green-500"
                 value={userData.password}
                 onChange={handleChange}
                 required
