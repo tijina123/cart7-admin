@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminService from "../../services/admin-api-service/AdminService";
+import ImageUploaderCategory from "./CategoryImageUploader";
 
 const CategoryTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -320,12 +321,13 @@ const CategoryTable = () => {
 
             {/* Category Image Upload */}
             <label className="block mb-2">Category Image</label>
+            
             <input
               type="file"
               className="w-full border p-2 rounded mb-2"
               onChange={handleImageUpload}
             />
-
+          <ImageUploaderCategory/>
             {/* Variant Toggle (Green when ON) */}
             <label className="block mb-2 flex items-center">
               <span className="mr-2">Variant</span>
