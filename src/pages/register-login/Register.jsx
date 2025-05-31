@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaChevronDown } from "react-icons/fa";
 import AdminService from "../../services/admin-api-service/AdminService";
+import toast, { Toaster } from "react-hot-toast";
+
 
 const planOptions = [
   { name: "Free plan", amount: 0, percentage: 25 },
@@ -57,14 +59,19 @@ const Register = () => {
 
     console.log(selected, "===selected");
     console.log(userData, "===userData");
-
     const response = await postRegister(userData);
-    if (response?.success === true) {
-      setLoading(true);
-      setError("");
-      navigate("/login");
+    
+    if (response?.data?.success) {
+      // setLoading(true);
+      // setError("");
+      toast.success(response?.data?.message);
+              setTimeout(() => {
+                navigate("/login");
+              }, 1000);
+
     } else {
-      setLoading(false);
+      // setLoading(false);
+      toast.error(response?.data?.message);
     }
     console.log("Registering user:", userData);
   };
@@ -188,38 +195,38 @@ const Register = () => {
           </span>
         </div>
 
-        {showDropdown && (
-          <ul
-            className="dropdown-menu show w-100"
-            style={{ position: "absolute", top: "100%", zIndex: 1000 }}
-          >
-            {planOptions.map((option, index) => (
-              <li key={index}>
-                <button
-                  type="button"
-                  className="dropdown-item d-flex justify-content-between align-items-center"
-                  onClick={() => {
-                    setSelected(option.name);
-                    setShowDropdown(false);
-                    handleChange({
-                      target: {
-                        name: "plan",
-                        value: option.name, // or JSON.stringify(option) if needed
-                      },
-                    });
-                  }}
+              {showDropdown && (
+                <ul
+                  className="dropdown-menu show w-100"
+                  style={{ position: "absolute", top: "100%", zIndex: 1000 }}
                 >
-                  <div className="w-full d-flex justify-content-between">
-                    <div className="fw-bold">{option.name}</div>
-                    <small>₹{option.amount} - {option.percentage}% fee</small>
-                  </div>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
+                  {planOptions.map((option, index) => (
+                    <li key={index}>
+                      <button
+                        type="button"
+                        className="dropdown-item d-flex justify-content-between align-items-center"
+                        onClick={() => {
+                          setSelected(option.name);
+                          setShowDropdown(false);
+                          handleChange({
+                            target: {
+                              name: "plan",
+                              value: option.name, // or JSON.stringify(option) if needed
+                            },
+                          });
+                        }}
+                      >
+                        <div className="w-full d-flex justify-content-between">
+                          <div className="fw-bold">{option.name}</div>
+                          <small>₹{option.amount} - {option.percentage}% fee</small>
+                        </div>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
           <div className="mb-3 position-relative">
             <label className="form-label">Password</label>
             <div className="input-group">

@@ -5,7 +5,7 @@ const CategoryTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [editingCategory, setEditingCategory] = useState(null);
-  const { AddCategory, EditCategory, handleToggleCategory, getCategoryeData } =
+  const { AddCategory, EditCategory, handleToggleCategory, getAllCategoryeData  } =
     AdminService();
 
   const [newCategory, setNewCategory] = useState({
@@ -22,7 +22,7 @@ const CategoryTable = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await getCategoryeData();
+      const response = await getAllCategoryeData();
 
       setCategories(response.categories);
     } catch (error) {}
@@ -319,15 +319,15 @@ const CategoryTable = () => {
             />
 
             {/* Category Image Upload */}
-            <label className="block mb-2">Category Image</label>
+            {/* <label className="block mb-2">Category Image</label>
             <input
               type="file"
               className="w-full border p-2 rounded mb-2"
               onChange={handleImageUpload}
-            />
+            /> */}
 
             {/* Variant Toggle (Green when ON) */}
-            <label className="block mb-2 flex items-center">
+            {/* <label className="block mb-2 flex items-center">
               <span className="mr-2">Variant</span>
               <div
                 className={`relative w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors ${
@@ -346,10 +346,10 @@ const CategoryTable = () => {
                   }`}
                 ></div>
               </div>
-            </label>
+            </label> */}
 
             {/* Published Checkbox */}
-            <label className="block mb-2 flex items-center">
+            {/* <label className="block mb-2 flex items-center">
               <input
                 type="checkbox"
                 className="mr-2"
@@ -362,7 +362,7 @@ const CategoryTable = () => {
                 }
               />
               Published
-            </label>
+            </label> */}
 
             {/* Buttons */}
             <div className="flex justify-end gap-2 mt-4">
